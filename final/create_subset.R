@@ -10,15 +10,14 @@ nhanes_subset <- NHANES %>%
     AlcoholDay >= 1 & AlcoholDay <= 2 ~ "Moderate",
     AlcoholDay >= 3 ~ "Heavy"
   )) %>%
-  # 2. Select Response, Treatment, and 10 Covariates
+  # 2. Select Response, Treatment, and 7 Covariates
   select(
     DirectChol,      # Response
     AlcoholCategory, # Treatment
-    Age, Gender, BMI, Poverty, Education, 
-    TotChol, BPSysAve, Diabetes, SmokeNow, PhysActive
+    Age, Gender, BMI, BPSysAve, Diabetes, SmokeNow, PhysActive
   ) %>%
   # 3. Handle missing values (important for Bayesian/Matrix-based models)
-  # Bayesian models usually require no NAs in the covariate matrix
+
   na.omit()
 
 # Check dimensions
