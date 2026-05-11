@@ -22,5 +22,5 @@ ggplot(df, aes(x = DirectChol)) +
   geom_density(fill = "lightblue", alpha = 0.5) +
   facet_wrap(~ AlcoholCategory)
 
-#Most;y normal but extreme outliers in each group 
+#Mostly normal but extreme outliers in each group 
 #KW is better
