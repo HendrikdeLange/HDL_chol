@@ -23,6 +23,9 @@ nhanes_subset <- NHANES %>%
 # Check dimensions
 dim(nhanes_subset)
 summary(nhanes_subset)
+n <- length(nhanes_subset$Age)#2946
+n
 
 #Save Data
 saveRDS(nhanes_subset, "data/nhanes_subset.rds")
+
