@@ -24,10 +24,13 @@ imp_vars <- c(colnames(df)[!(colnames(df) %in% c("DirectChol", "AlcoholCategory"
 imp_data <- df[, imp_vars]
 
 # --- Step 4: Run MICE ---
-mice_data <- mice(imp_data, m = 50, maxit = 10, method = "pmm", seed = 123) #Keeps suggesting
+mice_data <- mice(imp_data, m = 50, maxit = 10, method = "pmm", seed = 123) 
+
+
+
 
 #Bullets
-#Bullet 1
+#Bullet 2
 
 collapsed <- complete(mice_data, action = "long", include = FALSE) %>%
   group_by(.id) %>%                        
@@ -132,4 +135,3 @@ mod_ci
 
 #Rubins Heavy - Abstainer
 hvy_ci
-
