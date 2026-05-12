@@ -22,7 +22,7 @@ imp_vars <- c(colnames(df)[!(colnames(df) %in% c("DirectChol", "AlcoholCategory"
 imp_data <- df[, imp_vars]
 
 # --- Step 4: Run MICE ---
-mice_data <- mice(imp_data, m = 1000, maxit = 20, method = "norm", seed = 123) #Keeps suggesting
+mice_data <- mice(imp_data, m = 100, maxit = 20, method = "norm", seed = 123) #Keeps suggesting
 
 
 
