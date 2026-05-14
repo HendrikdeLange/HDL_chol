@@ -13,14 +13,13 @@ TukeyHSD(model_1)
 
 #Model 2 (KW)
 kruskal.test(DirectChol ~factor(AlcoholCategory), data=df)
-#test which test is better
-by(df$DirectChol, df$AlcoholCategory, shapiro.test)
+
+
 
 
 #Graphs for the treatment
 ggplot(df, aes(x = DirectChol)) +
   geom_density(fill = "lightblue", alpha = 0.5) +
   facet_wrap(~ AlcoholCategory)
-
-#Mostly normal but extreme outliers in each group 
+ 
 #KW is better

@@ -46,7 +46,7 @@ post_ci    <- apply(beta_draws, 2, quantile, probs = c(0.025, 0.975))
 round(rbind(mean = post_means, post_ci), 4)
 mean(sigma2_draws)
 
-# Trace plots to verify sampler behaviour (Just say its riht in the presentation)
+# Trace plots to verify sampler behaviour 
 par(mfrow = c(2, 2))
 for (j in 1:min(4, k)) {
   plot(beta_draws[, j], type = "l",

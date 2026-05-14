@@ -20,6 +20,7 @@ nhanes_subset <- NHANES %>%
 
   na.omit()
 
+nhanes_subset$DirectChol <- log(nhanes_subset$DirectChol)
 # Check dimensions
 dim(nhanes_subset)
 summary(nhanes_subset)
