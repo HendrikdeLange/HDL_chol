@@ -4,7 +4,7 @@ library(car)
 df <- readRDS("data/nhanes_subset.rds")
 colnames(df)
 df %>% count(df$AlcoholCategory)
-
+df$DirectChol <- exp(df$DirectChol)
 
 
 #1 Continous Dependent Variable -CHECK
