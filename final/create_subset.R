@@ -21,6 +21,9 @@ nhanes_subset <- NHANES %>%
   na.omit()
 
 nhanes_subset$DirectChol <- log(nhanes_subset$DirectChol)
+
+#Randoly remove 80% of the observations for testing purposes
+#nhanes_subset <- nhanes_subset[sample(seq_len(nrow(nhanes_subset)), size = floor(0.10 * nrow(nhanes_subset))), ]
 # Check dimensions
 dim(nhanes_subset)
 summary(nhanes_subset)
@@ -29,4 +32,5 @@ n
 
 #Save Data
 saveRDS(nhanes_subset, "data/nhanes_subset.rds")
+
 

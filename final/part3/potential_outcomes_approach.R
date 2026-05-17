@@ -13,6 +13,9 @@ df$AlcoholCategory <- relevel(factor(df$AlcoholCategory), ref = "Abstainer")
 trt_levels         <- levels(df$AlcoholCategory)   # "Abstainer", "Moderate", "Heavy"
 
 
+
+
+
 #####PLOTTING PURPOSES
 obs_abstainer_vec <- df$DirectChol[df$AlcoholCategory == "Abstainer"]
 obs_moderate_vec <- df$DirectChol[df$AlcoholCategory == "Moderate"]
@@ -33,42 +36,31 @@ imp_vars <- c(colnames(df)[!(colnames(df) %in% c("DirectChol", "AlcoholCategory"
 imp_data <- df[, imp_vars]
 
 # --- Step 4: Run MICE ---
-mice_data <- mice(imp_data, m = 50, maxit = 10, method = "norm", seed = 100) 
+mice_data <- mice(imp_data, m = 200, maxit = 20, method = "norm", seed = 100) 
 
 
 
 
-#Bullets
-#Bullet 2
+#TESTING
+#this is mice
+df_vectors <- complete(mice_data, action = "long", include = FALSE) 
+df_vectors$moderate_abs <- exp(df_vectors$Moderate) - exp(df_vectors$Abstainer)
+df_vectors$heavy_abs <- exp(df_vectors$Heavy) - exp(df_vectors$Abstainer)
 
-collapsed <- complete(mice_data, action = "long", include = FALSE) %>%
-  group_by(.id) %>%                        
+collapsed <- df_vectors %>%
+  group_by(.imp) %>%                        
   summarise(
-    Abstainer = mean(exp(Abstainer), na.rm = TRUE),
-    Heavy     = mean(exp(Heavy),     na.rm = TRUE),
-    Moderate  = mean(exp(Moderate),  na.rm = TRUE),
+    moderate_abs = mean(moderate_abs, na.rm = TRUE),
+    heavy_abs    = mean(heavy_abs,     na.rm = TRUE),
     .groups = "drop"
   )
 
 
-#This is now one dataset with the mean of impuations
-#calculate the causal effects
-collapsed$moderate_abstainer <- collapsed$Moderate - collapsed$Abstainer
-collapsed$heavy_abstainer <- collapsed$Heavy - collapsed$Abstainer
-
-#Histogram of Moderate - Abstainer
-ggplot(collapsed, aes(x = moderate_abstainer)) +
-  geom_histogram()
-
-#Histogram of Heavy - Abstainer
-ggplot(collapsed, aes(x = heavy_abstainer)) +
-  geom_histogram()
-
 #Percentiles
-#MICE Moderate - Abstainer
-quantile(sort(collapsed$moderate_abstainer), probs=c(0.025,0.5, 0.975))
-# MICE Heavy - Abstainer
-quantile(sort(collapsed$heavy_abstainer), probs=c(0.025,0.5, 0.975))
+# ICE Moderate - Abstainer
+quantile(sort(collapsed$moderate_abs), probs=c(0.025,0.5, 0.975))
+# ICE Heavy - Abstainer
+quantile(sort(collapsed$heavy_abs), probs=c(0.025,0.5, 0.975))
 
 
 #Bullet 3
@@ -177,15 +169,17 @@ plot_df$category <- factor(
   plot_df$category,
   levels = c("Abstainer", "Moderate", "Heavy")
 )
+
+plot_df$type <- factor(plot_df$type, levels = c("Observed", "Imputed"))
+
 ggplot(plot_df, aes(x = value, fill = type, colour = type)) +
-  geom_density(alpha = 0.4) +
+  geom_density(alpha = 0.4, linewidth = 0.9) +
   facet_wrap(~ category) +
-  scale_fill_manual(values = c("Imputed" = "#FF00BD", "Observed" = "#0057E9")) +
-  scale_colour_manual(values = c("Imputed" = "#FF00BD", "Observed" = "#0057E9")) +
+  scale_fill_manual(values = c("Imputed" = "#EC058E", "Observed" = "#41521F")) +
+  scale_colour_manual(values = c("Imputed" = "#EC058E", "Observed" = "#41521F")) +
   labs(x = "log(DirectChol (mmol/L))", y = "Density",
        fill = "Type", colour = "Type") +
   theme_minimal()
 
 test_vector <- df_vectors$Heavy[df_vectors$.imp == 50]
 densityplot(test_vector)
-

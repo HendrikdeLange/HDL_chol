@@ -59,3 +59,4 @@ hist(sigma2_posterior_vec, breaks = 30, main = "Posterior of sigma^2")
 
 
 
+par(mfrow = c(2,1))

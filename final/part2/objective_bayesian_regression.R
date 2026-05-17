@@ -53,3 +53,11 @@ for (j in 1:min(4, k)) {
        main = paste("Trace:", colnames(x_mat)[j]),
        ylab = colnames(x_mat)[j], xlab = "Iteration")
 }
+
+source("final/part2/subjective_bayesian_regression.R")
+par(mfrow = c(2,1))
+plot(sigma2_draws, type = "l",
+     ylab = "Variance", main = "Objective Bayesian Regression Residual Variance")
+
+plot(sigma2_posterior_vec, type = "l",
+     ylab = "Variance", main = "Subjective Bayesian Regression Residual Variance")
